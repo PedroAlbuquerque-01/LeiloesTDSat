@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -136,17 +137,28 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+        
         String id = id_produto_venda.getText();
-        
         ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+    
+    if (id.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Por favor, insira um ID de produto.");
+        return; 
+    }
+
+    try {
+        int produtoId = Integer.parseInt(id);
+        produtosdao.venderProduto(produtoId);
+        listarProdutos(); 
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "ID do produto deve ser um número válido.");
+    }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
+           
+        vendasVIEW vendas = new vendasVIEW(); 
+           vendas.setVisible(true); 
     }//GEN-LAST:event_btnVendasActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
@@ -188,27 +200,27 @@ public class listagemVIEW extends javax.swing.JFrame {
         });
     }
     
-    private void listarProdutos(){
-        try {
-            ProdutosDAO produtosdao = new ProdutosDAO();
-            
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0);
-            
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
-                model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
-                });
-            }
-        } catch (Exception e) {
+    private void listarProdutos() {
+    try {
+        ProdutosDAO produtosdao = new ProdutosDAO();
+        
+        DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+        model.setNumRows(0);
+        
+        ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
+        
+        for (ProdutosDTO produto : listagem) {
+            model.addRow(new Object[]{
+                produto.getId(),
+                produto.getNome(),
+                produto.getValor(),
+                produto.getStatus()
+            });
         }
-    
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Erro ao listar produtos: " + e.getMessage());
     }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnVendas;
@@ -222,6 +234,4 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
-
-    
 }
