@@ -103,6 +103,7 @@ public class ProdutosDAO {
     }
     
     public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        
         String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
         ArrayList<ProdutosDTO> produtosVendidos = new ArrayList<>();
         try {
