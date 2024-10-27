@@ -40,7 +40,8 @@ public class vendasVIEW extends javax.swing.JFrame {
         labelTitulo.setFont(new Font("Lucida Fax", Font.PLAIN, 18));
         add(labelTitulo, BorderLayout.NORTH);
 
-        // Configuração da tabela
+        // Configuração da tabela 
+        
         modeloTabela = new DefaultTableModel(new Object[]{"ID", "Nome", "Valor"}, 0);
         tabelaVendas = new JTable(modeloTabela);
         tabelaVendas.setBackground(new Color(245, 245, 245)); 
